@@ -1,40 +1,54 @@
-import logo from "./logo.svg";
 import "./App.css";
-
+import React, { Component } from 'react'
+import * as BooksAPI from './BooksAPI';
+//export default class Searchbar extends React.Component
 class App extends Component {
   constructor(props) {
     super();
     this.state = {
       books: [], // object of title, author , catagorty
-      search: "",
+      query: "",
+      booksOnDisplay: [],
     };
   }
-
+  
   searchBooks = (e)=>{
     this.setState({[e.target.name]:e.target.value
     })
   }
-  submitSearchBooks
+  submitSearch=(event)=>{
+    event.preventDefault();
+    this.props.filterBySearchTerm(this.state.searchTerm)
+    this.setState({
+    searchTerm: ""
+    })
+  }
+  componentDidMount() {
+    BooksAPI.getAll().then(allBooks => {
+      this.setState({
+    	booksOnDisplay: allBooks.filter(book => book.shelf !== 'none')
+	  })
+  	})
+  }
+
+  updateQuerey(query){
+    this.setState({query})
+  }
+
+ searchBooks(query){
+   
+ }
+
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+  return (
+  <div>
+    <input onChange={this.searchBooks} defaultValue={this.submitSearch}></input>
+  </div>
+  );
   }
 }
 
 export default App;
+
+
+
