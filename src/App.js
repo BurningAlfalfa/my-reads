@@ -17,11 +17,7 @@ class App extends Component {
     })
   }
   submitSearch=(event)=>{
-    event.preventDefault();
-    this.props.filterBySearchTerm(this.state.searchTerm)
-    this.setState({
-    searchTerm: ""
-    })
+    const filteredArray = this.books.filter(element => element.includes(this.query))
   }
   componentDidMount() {
     BooksAPI.getAll().then(allBooks => {
@@ -36,13 +32,23 @@ class App extends Component {
   }
 
  searchBooks(query){
+  BooksAPI.search(query).then((results)=>{
+    if(results && results.length > 0) {
+        let searchResults = results;
+        searchResults.map((book) => book.shelf ="none")
+        this.state.search.map((book) => {
+          
+        })
+    }
+  })
    
  }
 
   render() {
   return (
   <div>
-    <input onChange={this.searchBooks} defaultValue={this.submitSearch}></input>
+    <input onChange={this.filteredArray} defaultValue={this.state.query}></input>
+    <button onClick ={this.filteredArray}>Search</button>
   </div>
   );
   }
