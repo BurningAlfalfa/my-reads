@@ -1,4 +1,4 @@
-mport "./App.css";
+import "./App.css";
 import React, { Component } from "react";
 import * as BooksAPI from "./BooksAPI";
 //export default class Searchbar extends React.Component
@@ -39,14 +39,14 @@ class App extends Component {
   }
 
   render() {
-    const filteredArray = this.state.books.filter.ma(book) =>
+    const filteredArray = this.state.books.filter((book) =>
     
       //book.includes(this.state.query)
       {
-        if (book.author.includes(this.state.query)) {
+        if (book.author.includes(this.state.query)).map(book) {
           return true;
         }
-      }
+      });
 
     
       
