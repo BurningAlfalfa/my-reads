@@ -1,6 +1,7 @@
 import React from "react";
 import { Book } from "./Book";
 import * as BooksAPI from "./BooksAPI";
+import { Link } from "react-router-dom";
 
 export class Search extends React.Component {
   constructor(props) {
@@ -23,9 +24,29 @@ export class Search extends React.Component {
   render() {
     console.log(this.state.books);
     return (
-      <div>
+      <div style={{ display: "flex" }}>
+        <Link to="/">
+          <button
+            style={{
+              backgroundImage: `url("/arrow-back.svg")`,
+              backgroundColor: "white",
+              height: 50,
+              width: 50,
+              backgroundRepeat: "no-repeat",
+              border: "none",
+              position: "relative",
+              backgroundSize: "60%",
+              backgroundPosition: "center",
+              display: "flex",
+            }}
+          />
+        </Link>
         <input
-          style={{ width: "100%", height: 40 }}
+          style={{
+            width: "90%",
+            height: 50,
+            position: "relative",
+          }}
           placeholder="Search by title, author "
           onChange={(event) => {
             const inputValue = event.target.value;

@@ -7,7 +7,7 @@ export class Book extends React.Component {
   }
   async changeShelf(value) {
     console.log({ value });
-    await BooksAPI.update(this.props.id, value);
+    await BooksAPI.update({ id: this.props.id }, value);
     const book = await BooksAPI.get(this.props.id);
     console.log(book);
   }
@@ -35,6 +35,7 @@ export class Book extends React.Component {
               style={{
                 backgroundImage: `url("/arrow-drop-down.svg")`,
                 backgroundColor: "green",
+                displayEmpty: "false",
                 height: 60,
                 width: 60,
                 backgroundRepeat: "no-repeat",
@@ -45,13 +46,24 @@ export class Book extends React.Component {
                 backgroundPosition: "center",
               }}
             >
-              <option value="move" disabled>
+              <option style={{ backgroundColor: "white" }} value="move">
                 Move to...
               </option>
-              <option value="currentlyReading">Currently Reading</option>
-              <option value="wantToRead">Want to Read</option>
-              <option value="read">Read</option>
-              <option value="none">None</option>
+              <option
+                style={{ backgroundColor: "white" }}
+                value="currentlyReading"
+              >
+                Currently Reading
+              </option>
+              <option style={{ backgroundColor: "white" }} value="wantToRead">
+                Want to Read
+              </option>
+              <option style={{ backgroundColor: "white" }} value="read">
+                Read
+              </option>
+              <option style={{ backgroundColor: "white" }} value="none">
+                None
+              </option>
             </select>
           </div>
         </div>
