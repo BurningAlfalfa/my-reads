@@ -71,6 +71,7 @@ class Home extends Component {
             .filter((book) => book.shelf === "currentlyReading")
             .map((book) => (
               <Book
+                shelf={book.shelf}
                 key={book.id}
                 title={book.title}
                 id={book.id}
@@ -89,6 +90,7 @@ class Home extends Component {
             .filter((book) => book.shelf === "wantToRead")
             .map((book) => (
               <Book
+                shelf={book.shelf}
                 key={book.id}
                 id={book.id}
                 title={book.title}
@@ -104,6 +106,7 @@ class Home extends Component {
             .filter((book) => book.shelf === "read")
             .map((book) => (
               <Book
+                shelf={book.shelf}
                 key={book.id}
                 id={book.id}
                 title={book.title}

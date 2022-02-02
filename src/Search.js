@@ -8,16 +8,31 @@ export class Search extends React.Component {
     super(props);
     this.state = {
       books: [],
+      inputValue: "",
     };
   }
 
   async searchBooks(query) {
+    console.log({ query });
     const searchResult = await BooksAPI.search(query);
 
-    if (searchResult && searchResult.length > 0) {
+    if (Array.isArray(searchResult)) {
       this.setState({
         books: searchResult,
       });
+    } else
+      this.setState({
+        books: [],
+      });
+    console.log("got search", searchResult);
+    //const debouncedOnChange = useMemo(() => debounce(onChange, 300), []);
+  }
+  onKeyUp(e) {
+    // This would have the current value after hitting backspace.
+    if (e.keyCode === 8) {
+      console.log("delete");
+      console.log(`Value after clearing input: "${e.target.value}"`);
+      // Value after clearing input: ""
     }
   }
 
@@ -52,7 +67,10 @@ export class Search extends React.Component {
             const inputValue = event.target.value;
             this.searchBooks(inputValue);
           }}
+          onKeyUp={this.onKeyUp}
+          onKeyDown={this.onKeyDown}
         />
+
         <div
           style={{
             display: "flex",
@@ -63,6 +81,7 @@ export class Search extends React.Component {
           {this.state.books.map((book) => {
             return (
               <Book
+                shelf={book.shelf}
                 id={book.id}
                 key={book.id}
                 title={book.title}

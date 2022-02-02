@@ -4,6 +4,11 @@ export class Book extends React.Component {
   constructor(props) {
     super(props);
     this.changeShelf = this.changeShelf.bind(this);
+    {
+      this.state = {
+        selectedValue: "",
+      };
+    }
   }
   async changeShelf(value) {
     console.log({ value });
@@ -12,6 +17,7 @@ export class Book extends React.Component {
     console.log(book);
   }
   render() {
+    console.log(this.props.title, this.props.shelf);
     return (
       <div>
         <div style={{ margin: 20, width: 130 }}>
@@ -25,25 +31,26 @@ export class Book extends React.Component {
             })}
           <div
             style={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "flex-end",
+              backgroundImage: `url("/arrow-drop-down.svg")`,
+              backgroundColor: "green",
+              displayEmpty: "false",
+              height: 60,
+              width: 60,
+              backgroundRepeat: "no-repeat",
+              borderRadius: "50%",
+              border: "none",
+              boxShadow: "7px 5px 19px -3px rgba(0,0,0,0.54)",
+              backgroundSize: "60%",
+              backgroundPosition: "center",
             }}
           >
             <select
               onChange={(e) => this.changeShelf(e.target.value)}
+              value={this.props.shelf}
               style={{
-                backgroundImage: `url("/arrow-drop-down.svg")`,
-                backgroundColor: "green",
-                displayEmpty: "false",
                 height: 60,
+                opacity: 0,
                 width: 60,
-                backgroundRepeat: "no-repeat",
-                borderRadius: "50%",
-                border: "none",
-                boxShadow: "7px 5px 19px -3px rgba(0,0,0,0.54)",
-                backgroundSize: "60%",
-                backgroundPosition: "center",
               }}
             >
               <option style={{ backgroundColor: "white" }} value="move">
