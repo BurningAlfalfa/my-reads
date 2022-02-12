@@ -11,6 +11,16 @@ import * as BooksAPI from "./BooksAPI";
 class App extends Component {
   constructor(props) {
     super();
+    this.state = {
+      bookWithShelves: [],
+    };
+  }
+  componentDidMount() {
+    BooksAPI.getAll().then((allBooks) => {
+      this.setState({
+        bookWithShelves: allBooks.filter((book) => book.shelf !== "none"),
+      });
+    });
   }
 
   render() {
@@ -20,10 +30,10 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route exact path="/">
-            <Home />
+            <Home bookWithShelves={this.state.bookWithShelves} />
           </Route>
           <Route exact path="/search">
-            <Search />
+            <Search bookWithShelves={this.state.bookWithShelves} />
           </Route>
         </Switch>
       </BrowserRouter>
@@ -34,20 +44,12 @@ class Home extends Component {
   constructor(props) {
     super();
     this.state = {
-      booksOnDisplay: [],
+      //bookWithShelves: [], lifting up state
       addBookButton: false,
     };
   }
 
-  componentDidMount() {
-    BooksAPI.getAll().then((allBooks) => {
-      this.setState({
-        booksOnDisplay: allBooks.filter((book) => book.shelf !== "none"),
-      });
-    });
-  }
   render() {
-    console.log(this.state.booksOnDisplay);
     return (
       <div>
         <div
@@ -67,7 +69,7 @@ class Home extends Component {
         </div>
         <hr />
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {this.state.booksOnDisplay
+          {this.props.bookWithShelves
             .filter((book) => book.shelf === "currentlyReading")
             .map((book) => (
               <Book
@@ -86,7 +88,7 @@ class Home extends Component {
         </div>
         <hr />
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {this.state.booksOnDisplay
+          {this.props.bookWithShelves
             .filter((book) => book.shelf === "wantToRead")
             .map((book) => (
               <Book
@@ -102,7 +104,7 @@ class Home extends Component {
         <div style={{ fontWeight: "bold", fontSize: 30, margin: 15 }}>Read</div>
         <hr />
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {this.state.booksOnDisplay
+          {this.props.bookWithShelves
             .filter((book) => book.shelf === "read")
             .map((book) => (
               <Book
