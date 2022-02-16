@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { Book } from "./Book";
 import { Search } from "./Search";
 import * as BooksAPI from "./BooksAPI";
+import PropTypes from "prop-types";
 
 //export default class Searchbar extends React.Component
 
@@ -22,6 +23,20 @@ class App extends Component {
       });
     });
   }
+  changeShelf = async (bookShelf, id) => {
+    await BooksAPI.update({ id: id }, bookShelf);
+    console.log(this.state);
+    const newBookWithShelves = [...this.state.bookWithShelves];
+    const bookIndex = newBookWithShelves.findIndex(
+      (element) => element.id === id
+    );
+    const book = newBookWithShelves[bookIndex];
+    book.shelf = bookShelf;
+    console.log(this.state.bookWithShelves);
+    this.setState({
+      bookWithShelves: newBookWithShelves,
+    });
+  };
 
   render() {
     return (
@@ -30,10 +45,16 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route exact path="/">
-            <Home bookWithShelves={this.state.bookWithShelves} />
+            <Home
+              bookWithShelves={this.state.bookWithShelves}
+              changeShelf={this.changeShelf}
+            />
           </Route>
           <Route exact path="/search">
-            <Search bookWithShelves={this.state.bookWithShelves} />
+            <Search
+              bookWithShelves={this.state.bookWithShelves}
+              changeShelf={this.changeShelf}
+            />
           </Route>
         </Switch>
       </BrowserRouter>
@@ -50,6 +71,7 @@ class Home extends Component {
   }
 
   render() {
+    const { bookWithShelves } = this.props;
     return (
       <div>
         <div
@@ -69,11 +91,12 @@ class Home extends Component {
         </div>
         <hr />
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {this.props.bookWithShelves
+          {bookWithShelves
             .filter((book) => book.shelf === "currentlyReading")
             .map((book) => (
               <Book
                 shelf={book.shelf}
+                changeShelf={this.props.changeShelf}
                 key={book.id}
                 title={book.title}
                 id={book.id}
@@ -88,11 +111,12 @@ class Home extends Component {
         </div>
         <hr />
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {this.props.bookWithShelves
+          {bookWithShelves
             .filter((book) => book.shelf === "wantToRead")
             .map((book) => (
               <Book
                 shelf={book.shelf}
+                changeShelf={this.props.changeShelf}
                 key={book.id}
                 id={book.id}
                 title={book.title}
@@ -104,11 +128,12 @@ class Home extends Component {
         <div style={{ fontWeight: "bold", fontSize: 30, margin: 15 }}>Read</div>
         <hr />
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {this.props.bookWithShelves
+          {bookWithShelves
             .filter((book) => book.shelf === "read")
             .map((book) => (
               <Book
                 shelf={book.shelf}
+                changeShelf={this.props.changeShelf}
                 key={book.id}
                 id={book.id}
                 title={book.title}
@@ -140,6 +165,10 @@ class Home extends Component {
     );
   }
 }
+Home.propTypes = {
+  bookWithShelves: PropTypes.array,
+  id: PropTypes.number,
+};
 export default App;
 
 // Given a user is on the search page

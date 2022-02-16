@@ -1,23 +1,18 @@
 import React from "react";
 import * as BooksAPI from "./BooksAPI";
+import PropTypes from "prop-types";
+
 export class Book extends React.Component {
   constructor(props) {
     super(props);
-    this.changeShelf = this.changeShelf.bind(this);
     {
       this.state = {
         selectedValue: "",
       };
     }
   }
-  async changeShelf(value) {
-    console.log({ value });
-    await BooksAPI.update({ id: this.props.id }, value);
-    const book = await BooksAPI.get(this.props.id);
-    console.log(book);
-  }
+
   render() {
-    console.log(this.props.title, this.props.shelf);
     return (
       <div>
         <div style={{ margin: 20, width: 130 }}>
@@ -45,7 +40,9 @@ export class Book extends React.Component {
             }}
           >
             <select
-              onChange={(e) => this.changeShelf(e.target.value)}
+              onChange={(e) =>
+                this.props.changeShelf(e.target.value, this.props.id)
+              }
               value={this.props.shelf}
               style={{
                 height: 60,
@@ -78,6 +75,13 @@ export class Book extends React.Component {
     );
   }
 }
+Book.propTypes = {
+  shelf: PropTypes.string,
+  authors: PropTypes.array,
+  title: PropTypes.string,
+  image: PropTypes.object,
+  changeShelf: PropTypes.func,
+};
 
 // if a component is rendering a variable and it doesn't control updating/setting the variable value, it's a prop
 // if a component is rendering a variable and it does control updating/setting the variable value, it's a state
